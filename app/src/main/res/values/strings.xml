@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">task 7</string>
+    <string name="sign_in">Sign in</string>
+    <string name="user_name">User name</string>
+    <string name="password">Password</string>
+    <string name="password2">Repeat your password</string>
+    <string name="forgot_pass">Forgot password?</string>
+    <string name="do_not_have_account">Don\'t have an account?</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="title_activity_main2">MainActivity2</string>
+    <string name="calendar">Calendar</string>
+    <string name="exit">Exit</string>
+    <string name="timeline">Timeline</string>
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+    <string name="registration">REGISTRATION</string>
+    <string name="Notification">Notification:
+        your user name - must be your email,
+    your password must constraint 6+ symbols</string>
+    <string name="time_dialog">Please choose time interval</string>
+    <string name="one_day">1 day</string>
+    <string name="three_days">3 days</string>
+    <string name="week">7 days</string>
+
+</resources>
