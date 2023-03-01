@@ -31,8 +31,8 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MapFragment @Inject constructor() : Fragment(), OnMapReadyCallback {
 
-    private lateinit var binding: FragmentMapBinding
-
+    private var _binding: FragmentMapBinding? = null
+    private val binding get() = _binding!!
     @Inject
     lateinit var firebaseUtils: FirebaseUtils
     private val DEFAULT_ZOOM = 15
@@ -47,7 +47,7 @@ class MapFragment @Inject constructor() : Fragment(), OnMapReadyCallback {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentMapBinding.inflate(layoutInflater)
+        _binding = FragmentMapBinding.inflate(layoutInflater)
 
         fusedLocationProviderClient =
             LocationServices.getFusedLocationProviderClient(requireActivity())
@@ -103,5 +103,9 @@ class MapFragment @Inject constructor() : Fragment(), OnMapReadyCallback {
                 )
             }
         }
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
