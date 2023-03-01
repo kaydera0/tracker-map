@@ -1,16 +1,18 @@
-package com.example.task7.presentation.activities
+package com.example.task7.presentation.fragments
 
-import android.content.Intent
 import android.os.Bundle
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.example.task7.R
 import com.example.task7.data.FirebaseUtils
 import com.example.task7.dataClasses.LocationData
-import com.example.task7.databinding.ActivityMapBinding
-import com.example.task7.presentation.fragments.TimeDialogFragment
-import com.example.task7.viewModels.MapActivityViewModel
+import com.example.task7.databinding.FragmentMapBinding
+import com.example.task7.viewModels.MapViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -27,49 +29,50 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MapActivity : AppCompatActivity(), OnMapReadyCallback {
+class MapFragment @Inject constructor() : Fragment(), OnMapReadyCallback {
+
+    private lateinit var binding: FragmentMapBinding
 
     @Inject
     lateinit var firebaseUtils: FirebaseUtils
     private val DEFAULT_ZOOM = 15
-    private val vm: MapActivityViewModel by viewModels()
-    private lateinit var binding: ActivityMapBinding
+    private val vm: MapViewModel by viewModels()
     private lateinit var map: GoogleMap
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private var locationsArray = ArrayList<LocationData>()
 
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentMapBinding.inflate(layoutInflater)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityMapBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        fusedLocationProviderClient =
+            LocationServices.getFusedLocationProviderClient(requireActivity())
 
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
-
-        val mapFragment = supportFragmentManager
+        val mapFragment = childFragmentManager
             .findFragmentById(R.id.map2) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
         binding.exitBtn.setOnClickListener {
-            val mainActivity = Intent(this, MainActivity::class.java)
-            startActivity(mainActivity)
+            findNavController().navigate(R.id.action_mapFragment_to_loginFragment)
         }
         binding.timeBtn.setOnClickListener {
             TimeDialogFragment(dialogListener = { vm.dialogResult.value = it }).show(
-                supportFragmentManager,
+                childFragmentManager,
                 "TAG"
             )
         }
+        return binding.root
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
-        val userName = intent.extras?.get("userName").toString()
+        val userName = arguments?.getString("userName", "default").toString()
         locationsArray = firebaseUtils.readCloud(userName)
 
         map = googleMap
 
         vm.dialogResult.observe(this, Observer {
-
             map.clear()
             locationsArray = firebaseUtils.readCloud(userName)
             setMarkers(map)
