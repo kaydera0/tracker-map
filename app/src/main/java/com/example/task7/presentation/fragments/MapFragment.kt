@@ -40,6 +40,8 @@ class MapFragment @Inject constructor() : Fragment(), OnMapReadyCallback {
     private lateinit var map: GoogleMap
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private var locationsArray = ArrayList<LocationData>()
+    private val USERNAME_TAG = "userName"
+    private val DEFAULT_STR = "userName"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -67,7 +69,7 @@ class MapFragment @Inject constructor() : Fragment(), OnMapReadyCallback {
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
-        val userName = arguments?.getString("userName", "default").toString()
+        val userName = arguments?.getString(USERNAME_TAG, DEFAULT_STR).toString()
         locationsArray = firebaseUtils.readCloud(userName)
 
         map = googleMap
