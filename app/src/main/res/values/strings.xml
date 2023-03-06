@@ -27,6 +27,9 @@
     <string name="authentication_failed">Authentication failed.</string>
     <string name="success">success</string>
     <string name="something_wrong">something wrong</string>
+    <string name="show_pass">Show password.</string>
+    <string name="hide_pass">Hide password.</string>
+
 
 
 </resources>

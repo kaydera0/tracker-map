@@ -16,7 +16,6 @@ class FirebaseUtils {
             .get()
             .addOnSuccessListener { result ->
                 for (document in result) {
-
                     val location = LocationData(
                         document.data.get("longitude").toString().toDouble(),
                         document.data.get("latitude").toString().toDouble(),
